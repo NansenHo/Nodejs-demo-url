@@ -11,6 +11,13 @@ server.on('request', (request: IncomingMessage, response: ServerResponse) => {
     const {method, url: path, headers} = request;
     const {pathname, search} = url.parse(path);
 
+    if (method !== 'GET') {
+        response.statusCode = 405;
+        response.end();
+        return
+    }
+    // 静态服务器是不能接受 POST 请求的
+
     let filename = pathname.substr(1); // 去掉 pathname 的 / 就得到了 filename
     if (filename === '') {
         filename = 'index.html'
